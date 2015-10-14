@@ -1,20 +1,25 @@
 var proxyquire = require('proxyquire'),
-    assert = require('referee').assert;
+    assert = require('assert');
 
-var hello = proxyquire('../src/module-b', {
-    './module-a': {
-        loremIpsum: 'dolor sit amet'
-    }
-});
+describe('proxyquire', function(){
+    it('should replace strings on dependencies', function(){
+        var foo = proxyquire('../src/foo', {
+            './config': {
+                featureX: 'mock value'
+            }
+        });
 
-describe('called with an object', function(){
-    it('should override the exported object', function(){
-        var moduleA = hello();
+        assert.equal(foo(), 'mock value');
+    });
+    
+     it('should replace strings on dependencies using the @global flag', function(){
+        var foo = proxyquire('../src/foo', {
+            './config': {
+                featureX: 'mock value',
+                '@global': true 
+            }
+        });
 
-        console.log('-------------')
-        console.log('moduleA: ', JSON.stringify(moduleA, 1, 2));
-
-        assert.defined(moduleA.loremIpsum);
-        assert.equals(moduleA.hasOwnProperty('greeting'), false);
+        assert.equal(foo(), 'mock value');
     });
 });
