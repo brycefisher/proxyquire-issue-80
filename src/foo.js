@@ -1,6 +1,6 @@
 var config = require('./config');
 
-function hello(){
+function foo(){
     return config.featureX;
 }
 
